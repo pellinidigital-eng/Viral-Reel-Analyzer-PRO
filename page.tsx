@@ -1,6 +1,17 @@
 "use client";
 
+import * as Icons from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import {
+  analyzeContent,
+  CHECKOUT_URL,
+  CONTENT_TYPES,
+  PLATFORMS,
+  sampleInputs
+} from "@/lib/analyzer";
+import type { AnalyzerInput, AnalyzerResult } from "@/lib/analyzer";
+
+const {
   ArrowRight,
   BarChart3,
   Check,
@@ -13,17 +24,8 @@ import {
   Loader2,
   RefreshCcw,
   Sparkles,
-  Zap,
-} from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import {
-  analyzeContent,
-  CHECKOUT_URL,
-  CONTENT_TYPES,
-  PLATFORMS,
-  sampleInputs
-} from "@/lib/analyzer";
-import type { AnalyzerInput, AnalyzerResult } from "@/lib/analyzer";
+  Zap
+} = Icons;
 
 const emptyInput: AnalyzerInput = {
   idea: "",
