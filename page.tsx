@@ -13,9 +13,8 @@ import {
   Loader2,
   RefreshCcw,
   Sparkles,
-  Zap
+  Zap,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import {
   analyzeContent,
@@ -81,7 +80,7 @@ function serializeResult(result: AnalyzerResult) {
   ].join("\n");
 }
 
-function GaugeCard({ label, score, icon: Icon }: { label: string; score: number; icon: LucideIcon }) {
+function GaugeCard({ label, score, icon: Icon }: { label: string; score: number; icon: typeof Zap }) {
   const circumference = 2 * Math.PI * 44;
   const offset = circumference - (score / 100) * circumference;
 
