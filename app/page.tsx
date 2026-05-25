@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import {
   analyzeContent,
-  CHECKOUT_URL,
   CONTENT_TYPES,
   PLATFORMS,
   sampleInputs
@@ -292,13 +291,6 @@ export default function Home() {
                 retention, CTA, specificità e rischio flop.
               </p>
             </div>
-            <a
-              href={CHECKOUT_URL}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-gradient-to-r from-champagne to-signal px-5 text-sm font-semibold text-obsidian transition hover:scale-[1.02] hover:shadow-glow"
-            >
-              Sblocca PRO
-              <IconMark name="arrow" className="h-4 w-4" />
-            </a>
           </div>
         </header>
 
@@ -583,7 +575,7 @@ export default function Home() {
 
                 <Section title="Script migliorato">
                   <div className="mb-3 flex justify-end">
-                    <CopyButton copied={copied === "script"} label="Copia script" onClick={() => copyText("script", result.improvedScript)} />
+                    <CopyButton copied={copied === "script"} label="Copia script migliorato" onClick={() => copyText("script", result.improvedScript)} />
                   </div>
                   <pre className="premium-scrollbar whitespace-pre-wrap rounded-md border border-white/10 bg-black/20 p-4 text-sm leading-6 text-slate-200">
                     {result.improvedScript}
@@ -635,13 +627,6 @@ export default function Home() {
                   </Section>
                   <Section title="Consiglio engagement finale">
                     <p className="text-sm leading-6 text-slate-300">{result.engagementAdvice}</p>
-                    <a
-                      href={CHECKOUT_URL}
-                      className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-white text-sm font-semibold text-obsidian transition hover:bg-champagne"
-                    >
-                      Porta l'analisi in PRO
-                      <IconMark name="arrow" className="h-4 w-4" />
-                    </a>
                   </Section>
                 </div>
               </div>

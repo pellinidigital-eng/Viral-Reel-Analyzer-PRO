@@ -1,6 +1,3 @@
-export const CHECKOUT_URL =
-  "https://pellinidigital.com/cart/add?id=53617392714071&quantity=1&return_to=/checkout";
-
 export const CONTENT_TYPES = [
   "Educativo",
   "Storytelling",
