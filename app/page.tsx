@@ -1,31 +1,15 @@
 "use client";
 
-import {
-  ArrowRight,
-  BarChart3,
-  Check,
-  Clipboard,
-  Copy,
-  Crown,
-  Download,
-  Flame,
-  Gauge,
-  Loader2,
-  RefreshCcw,
-  Sparkles,
-  Zap
-  type LucideIcon
-} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import {
   analyzeContent,
-  AnalyzerInput,
-  AnalyzerResult,
   CHECKOUT_URL,
   CONTENT_TYPES,
   PLATFORMS,
   sampleInputs
 } from "@/lib/analyzer";
+import type { AnalyzerInput, AnalyzerResult } from "@/lib/analyzer";
 
 const emptyInput: AnalyzerInput = {
   idea: "",
@@ -40,6 +24,55 @@ const emptyInput: AnalyzerInput = {
 };
 
 type CopyKey = "analysis" | "script" | "hooks" | "caption";
+type IconName =
+  | "arrow"
+  | "chart"
+  | "check"
+  | "clipboard"
+  | "copy"
+  | "crown"
+  | "download"
+  | "flame"
+  | "gauge"
+  | "loader"
+  | "refresh"
+  | "spark"
+  | "zap";
+
+const iconText: Record<IconName, string> = {
+  arrow: "->",
+  chart: "CH",
+  check: "OK",
+  clipboard: "CL",
+  copy: "CP",
+  crown: "PR",
+  download: "DL",
+  flame: "VS",
+  gauge: "GA",
+  loader: "AI",
+  refresh: "RE",
+  spark: "SP",
+  zap: "HK"
+};
+
+function IconMark({
+  name,
+  className = ""
+}: {
+  name: IconName;
+  className?: string;
+}) {
+  const spin = className.includes("animate-spin");
+
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-flex shrink-0 items-center justify-center rounded-[4px] border border-current/25 bg-current/10 text-[9px] font-bold leading-none ${spin ? "animate-spin" : ""} ${className}`}
+    >
+      {iconText[name]}
+    </span>
+  );
+}
 
 function scoreColor(score: number) {
   if (score >= 78) return "text-signal";
@@ -82,7 +115,7 @@ function serializeResult(result: AnalyzerResult) {
   ].join("\n");
 }
 
-function GaugeCard({ label, score, icon: Icon }: { label: string; score: number; icon: LucideIcon }) {
+function GaugeCard({ label, score, icon }: { label: string; score: number; icon: IconName }) {
   const circumference = 2 * Math.PI * 44;
   const offset = circumference - (score / 100) * circumference;
 
@@ -90,7 +123,7 @@ function GaugeCard({ label, score, icon: Icon }: { label: string; score: number;
     <div className="premium-panel rounded-lg p-4 transition duration-200 hover:-translate-y-1 hover:border-white/20 hover:shadow-glow">
       <div className="mb-3 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-sm text-slate-300">
-          <Icon className="h-4 w-4 text-voltage" />
+          <IconMark name={icon} className="h-4 w-4 text-voltage" />
           {label}
         </div>
         <span className={`text-sm font-semibold ${scoreColor(score)}`}>{score}/100</span>
@@ -139,13 +172,13 @@ function CopyButton({ onClick, copied, label }: { onClick: () => void; copied: b
       onClick={onClick}
       className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-white/10 bg-white/[0.06] px-3 text-sm text-slate-100 transition hover:border-voltage/50 hover:bg-voltage/10"
     >
-      {copied ? <Check className="h-4 w-4 text-signal" /> : <Copy className="h-4 w-4" />}
+      {copied ? <IconMark name="check" className="h-4 w-4 text-signal" /> : <IconMark name="copy" className="h-4 w-4" />}
       {label}
     </button>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="premium-panel rounded-lg p-5">
       <h2 className="mb-4 text-base font-semibold text-white">{title}</h2>
@@ -248,7 +281,7 @@ export default function Home() {
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-champagne/20 bg-champagne/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-champagne">
-                <Crown className="h-3.5 w-3.5" />
+                <IconMark name="crown" className="h-3.5 w-3.5" />
                 Premium content intelligence
               </div>
               <h1 className="text-3xl font-semibold tracking-normal text-white sm:text-5xl">
@@ -264,7 +297,7 @@ export default function Home() {
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-gradient-to-r from-champagne to-signal px-5 text-sm font-semibold text-obsidian transition hover:scale-[1.02] hover:shadow-glow"
             >
               Sblocca PRO
-              <ArrowRight className="h-4 w-4" />
+              <IconMark name="arrow" className="h-4 w-4" />
             </a>
           </div>
         </header>
@@ -276,7 +309,7 @@ export default function Home() {
                 <h2 className="text-lg font-semibold text-white">Console analisi</h2>
                 <p className="mt-1 text-sm text-slate-400">Compila i segnali principali o carica un esempio.</p>
               </div>
-              <Sparkles className="h-5 w-5 text-champagne" />
+              <IconMark name="spark" className="h-5 w-5 text-champagne" />
             </div>
 
             <div className="mb-5 grid grid-cols-2 gap-3">
@@ -395,7 +428,7 @@ export default function Home() {
                   onClick={() => runAnalysis()}
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-gradient-to-r from-voltage via-signal to-champagne px-4 text-sm font-semibold text-obsidian transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
+                  {loading ? <IconMark name="loader" className="h-4 w-4 animate-spin" /> : <IconMark name="zap" className="h-4 w-4" />}
                   Analizza contenuto
                 </button>
                 <button
@@ -407,7 +440,7 @@ export default function Home() {
                   className="inline-flex min-h-12 w-12 items-center justify-center rounded-md border border-white/10 bg-white/[0.06] text-slate-100 transition hover:border-ember/50 hover:bg-ember/10"
                   title="Nuova analisi"
                 >
-                  <RefreshCcw className="h-4 w-4" />
+                  <IconMark name="refresh" className="h-4 w-4" />
                 </button>
               </div>
             </div>
@@ -419,7 +452,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-scan" />
                 <div className="relative flex min-h-60 flex-col items-center justify-center text-center">
                   <div className="mb-5 rounded-full border border-voltage/30 bg-voltage/10 p-4 shadow-glow animate-pulseGlow">
-                    <BarChart3 className="h-8 w-8 text-voltage" />
+                    <IconMark name="chart" className="h-8 w-8 text-voltage" />
                   </div>
                   <h2 className="text-xl font-semibold text-white">Analisi retention in corso</h2>
                   <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">
@@ -432,7 +465,7 @@ export default function Home() {
             {!loading && !result && (
               <div className="premium-panel rounded-lg p-7 text-center">
                 <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/[0.06]">
-                  <Gauge className="h-8 w-8 text-voltage" />
+                  <IconMark name="gauge" className="h-8 w-8 text-voltage" />
                 </div>
                 <h2 className="text-xl font-semibold text-white">Dashboard pronta</h2>
                 <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-400">
@@ -444,10 +477,10 @@ export default function Home() {
             {!loading && result && (
               <div className="grid gap-5 animate-rise">
                 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  <GaugeCard label="Viral score" score={result.scores.viral} icon={Flame} />
-                  <GaugeCard label="Hook" score={result.scores.hook} icon={Zap} />
-                  <GaugeCard label="Retention" score={result.scores.retention} icon={BarChart3} />
-                  <GaugeCard label="CTA" score={result.scores.cta} icon={ArrowRight} />
+                  <GaugeCard label="Viral score" score={result.scores.viral} icon="flame" />
+                  <GaugeCard label="Hook" score={result.scores.hook} icon="zap" />
+                  <GaugeCard label="Retention" score={result.scores.retention} icon="chart" />
+                  <GaugeCard label="CTA" score={result.scores.cta} icon="arrow" />
                 </div>
 
                 <div className="premium-panel rounded-lg p-5">
@@ -473,7 +506,7 @@ export default function Home() {
                         onClick={exportAnalysis}
                         className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-white/10 bg-white/[0.06] px-3 text-sm text-slate-100 transition hover:border-champagne/50 hover:bg-champagne/10"
                       >
-                        <Download className="h-4 w-4" />
+                        <IconMark name="download" className="h-4 w-4" />
                         Esporta
                       </button>
                     </div>
@@ -541,7 +574,7 @@ export default function Home() {
                   <ul className="grid gap-3 text-sm text-slate-300">
                     {result.improvements.map((item) => (
                       <li key={item} className="flex gap-3 rounded-md border border-white/10 bg-white/[0.04] p-3">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
+                        <IconMark name="check" className="mt-0.5 h-4 w-4 shrink-0 text-signal" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -594,7 +627,7 @@ export default function Home() {
                     <ul className="grid gap-2 text-sm text-slate-300">
                       {result.checklist.map((item) => (
                         <li key={item} className="flex gap-3">
-                          <Clipboard className="mt-0.5 h-4 w-4 shrink-0 text-champagne" />
+                          <IconMark name="clipboard" className="mt-0.5 h-4 w-4 shrink-0 text-champagne" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -607,7 +640,7 @@ export default function Home() {
                       className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-white text-sm font-semibold text-obsidian transition hover:bg-champagne"
                     >
                       Porta l'analisi in PRO
-                      <ArrowRight className="h-4 w-4" />
+                      <IconMark name="arrow" className="h-4 w-4" />
                     </a>
                   </Section>
                 </div>
