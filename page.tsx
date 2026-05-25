@@ -1,17 +1,6 @@
 "use client";
 
-import * as Icons from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
 import {
-  analyzeContent,
-  CHECKOUT_URL,
-  CONTENT_TYPES,
-  PLATFORMS,
-  sampleInputs
-} from "@/lib/analyzer";
-import type { AnalyzerInput, AnalyzerResult } from "@/lib/analyzer";
-
-const {
   ArrowRight,
   BarChart3,
   Check,
@@ -24,8 +13,18 @@ const {
   Loader2,
   RefreshCcw,
   Sparkles,
-  Zap
-} = Icons;
+  Zap,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
+import {
+  analyzeContent,
+  CHECKOUT_URL,
+  CONTENT_TYPES,
+  PLATFORMS,
+  sampleInputs
+} from "@/lib/analyzer";
+import type { AnalyzerInput, AnalyzerResult } from "@/lib/analyzer";
 
 const emptyInput: AnalyzerInput = {
   idea: "",
@@ -145,7 +144,7 @@ function CopyButton({ onClick, copied, label }: { onClick: () => void; copied: b
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="premium-panel rounded-lg p-5">
       <h2 className="mb-4 text-base font-semibold text-white">{title}</h2>
